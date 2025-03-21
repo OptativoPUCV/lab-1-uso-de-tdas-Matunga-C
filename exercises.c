@@ -133,7 +133,7 @@ int parentesisBalanceados(char *cadena) {
    }
    if(top(P) == NULL){
       free(P);
-      return 0;
+      return 1;
    }
    free(P);	
    return 0;
