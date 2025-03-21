@@ -119,57 +119,28 @@ paraéntesis balanceados. Retorna 1 si están balanceados,
 
 int parentesisBalanceados(char *cadena) {
    Stack *P = create_stack();
-   
-   for (size_t i = 0; cadena[i] != '\0'; ++i) {
-      char c = cadena[i];
-
-      // Si encontramos un paréntesis de apertura, lo agregamos a la pila
-      if (c == '(' || c == '{' || c == '[') {
-         push(P, &cadena[i]);
-      } 
-      else if (c == ')' || c == '}' || c == ']') {
-         // Si la pila está vacía, significa que hay un paréntesis de cierre sin apertura previa
-         if (top(P) == NULL) {
-            free(P);
-            return 0;
-         }
-
-         char *tope = (char*)top(P); 
-         if ((c == ')' && *tope == '(') || 
-             (c == '}' && *tope == '{') || 
-             (c == ']' && *tope == '[')) {
-            pop(P);  // Si hay coincidencia, eliminamos el paréntesis de la pila
-         } 
-         else {
-            free(P);
-            return 0; // Si no coinciden, la cadena no está balanceada
-         }
-      }
-   }
-
-   int balanceado = (top(P) == NULL) ? 1 : 0;  // Si la pila está vacía, está balanceado
-   free(P);
-   return balanceado;
-}
-
-
-/*int parentesisBalanceados(char *cadena) {
-   Stack *P = create_stack();
    for(size_t i = 0; i < strlen(cadena); ++i){
-      if(cadena[i] == '('){
+      if(cadena[i] == '(' || cadena[i] == '{' || cadena[i] == '['){
          push(P, &cadena[i]);
       }
-      else if(cadena[i] == ')'){
+      else if(cadena[i] == ')' || cadena[i] == '}' || cadena[i] == ']'){
          if(top(P) == NULL){
             free(P);
             return 0;
          }
-         pop(P);
+         char *tope = (char*)top(P);
+         if((cadena[i] == ')' && *tope == '(') || (cadena[i] == '}' && *tope == '{') || (cadena[i] == ']' && *tope == '[')){
+            pop(P);
+         }
+         else{
+            free(P);
+            return 0;
+         }   
       }
    }
    
    int balanceado = (top(P) == NULL) ? 1 : 0;
    free(P);	
    return balanceado;
-}*/
+}
 
