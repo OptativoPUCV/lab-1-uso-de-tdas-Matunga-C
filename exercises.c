@@ -5,8 +5,7 @@
 #include <ctype.h>
 #include "arraylist.h"
 #include "stack.h"
-
-//#include "exercises.h"
+#include "exercises.h"
 
 //Funciones auxiliares que puedes utilizar para debuggear tus ejercicios
 //NO MODIFICAR
@@ -43,6 +42,11 @@ Al finalizar retorna la lista creada.
 
 List* crea_lista() {
    List* L = create_list();
+   for(size_t i = 1; i <= 10; ++i){
+      int *dato = (int*)malloc(sizeof(int));
+      *dato = i;
+      pushBack(L, dato);
+   }
    return L;
 }
 
@@ -52,7 +56,14 @@ Crea una función que reciba una lista de enteros (int*) y
 retorne la suma de sus elementos.
 */
 int sumaLista(List *L) {
-   return 0;
+   int suma = 0;
+   int *dato;
+   dato = (int*)first(L);
+   while(dato != NULL) {
+      suma += *dato;
+      dato = (int*)next(L);
+   }
+   return suma;
 }
 
 /*
@@ -65,7 +76,14 @@ posiciona en el elemento anterior.
 */
 
 void eliminaElementos(List*L, int elem){
-
+   int *dato;
+   dato = (int*)first(L);
+   while(dato != NULL) {
+      if(*dato == elem){
+         free(popCurrent(L));
+      }
+      dato = (int*)next(L);
+   }
 }
 
 /*
@@ -76,6 +94,20 @@ Puedes usar una pila auxiliar.
 */
 
 void copia_pila(Stack* P1, Stack* P2) {
+   Stack *aux = create_stack();
+   void *dato;
+   while(top(P1) != NULL){
+      dato = top(P1);
+      push(aux, dato);
+      pop(P1);
+   }
+   while(top(aux) != NULL){
+      dato = top(aux);
+      push(P1, dato);
+      push(P2, dato);
+      pop(aux);
+   }
+   free(aux);
 }
 
 /*
@@ -86,6 +118,24 @@ paraéntesis balanceados. Retorna 1 si están balanceados,
 */
 
 int parentesisBalanceados(char *cadena) {
+   Stack *P = create_stack();
+   for(size_t i = 0; cadena[i] != '\0'; ++i){
+      if(cadena[i] == '('){
+         push(P, &cadena[i]);
+      }
+      else if(cadena[i] == ')'){
+         if(top(P) == NULL){
+            free(P);
+            return 0;
+         }
+         pop(P);
+      }
+   }
+   if(top(P) == NULL){
+      free(P);
+      return 1;
+   }
+   free(P);	
    return 0;
 }
 
